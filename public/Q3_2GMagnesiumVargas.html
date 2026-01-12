@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Form</title>
+
+    <style>
+        .error {
+            border: 2px solid red;
+            background-color: #fcc3c3;
+        }
+
+        fieldset {
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        function confirmSubmit() {
+            return confirm("Are you sure you want to submit this application?");
+        }
+
+        function confirmReset() {
+            return confirm("Are you sure you want to reset the form?");
+        }
+
+        function checkEmpty(field) {
+            if (field.value.trim() === "") {
+                field.classList.add("error");
+            } else {
+                field.classList.remove("error");
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+<form method="post" action="submit"
+      onsubmit="return confirmSubmit();"
+      onreset="return confirmReset();">
+
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label>
+            Student ID:
+            <input type="number" name="student_id" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Full Name:
+            <input type="text" name="full_name" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Birthday:
+            <input type="date" name="birthday" required>
+        </label>
+
+        <label>
+            Email Address:
+            <input type="email" name="email" required>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <legend>Other Details/Information Needed</legend>
+
+        <label>
+            Mobile Phone:
+            <input type="text" name="mobile" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Grade Level:
+            <select name="grade_level" required>
+                <option value="">-- Select Grade Level --</option>
+                <option value="g7">Grade 7</option>
+                <option value="g8">Grade 8</option>
+                <option value="g9">Grade 9</option>
+                <option value="g10">Grade 10</option>
+                <option value="g11">Grade 11</option>
+                <option value="g12">Grade 12</option>
+            </select>
+        </label>
+
+        <label>
+            Intern / Extern:
+            <input type="radio" name="status" value="internal" required> Intern
+            <input type="radio" name="status" value="external" required> Extern
+        </label>
+
+        <label>
+            Preferred Organization / Club:
+            <select name="club" required>
+                <option value="">-- Select Club --</option>
+                <option value="Volleyball Club">Volleyball Club</option>
+                <option value="Math Club">Math Club</option>
+                <option value="Arts">Arts and Literature</option>
+                <option value="Science Club">Science Club</option>
+                <option value="Music Club">Music Club</option>
+                <option value="Media">Media and Publications</option>
+            </select>
+        </label>
+
+        <label>
+            Why do you want to join?
+            <textarea name="reason" rows="4" required onblur="checkEmpty(this)"></textarea>
+        </label>
+    </fieldset>
+
+    <input type="submit" value="Submit Application">
+    <input type="reset" value="Reset Form">
+
+</form>
+
+</body>
+</html>
