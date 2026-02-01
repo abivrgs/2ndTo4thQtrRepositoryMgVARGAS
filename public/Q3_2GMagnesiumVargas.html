@@ -23,7 +23,32 @@
 
     <script>
         function confirmSubmit() {
-            return confirm("Are you sure you want to submit this application?");
+            if (!confirm("Are you sure you want to submit this application?")) {
+                return false;
+            }
+
+            let form = document.forms[0];
+
+            let signup = {
+                student_id: form.student_id.value,
+                full_name: form.full_name.value,
+                birthday: form.birthday.value,
+                email: form.email.value,
+                mobile: form.mobile.value,
+                grade_level: form.grade_level.options[form.grade_level.selectedIndex].text,
+                status: document.querySelector('input[name="status"]:checked').value,
+                club: form.club.value,
+                reason: form.reason.value
+            };
+
+            let list = localStorage.getItem("signups");
+            list = list ? JSON.parse(list) : [];
+            list.push(signup);
+            localStorage.setItem("signups", JSON.stringify(list));
+
+            alert("Application submitted!");
+            form.reset();
+            return false;
         }
 
         function confirmReset() {
@@ -37,12 +62,16 @@
                 field.classList.remove("error");
             }
         }
+
+        function viewSignups() {
+            window.location.href = "viewSignUps.html";
+        }
     </script>
 </head>
 
 <body>
 
-<form method="post" action="submit"
+<form method="post"
       onsubmit="return confirmSubmit();"
       onreset="return confirmReset();">
 
@@ -71,7 +100,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>Other Details/Information Needed</legend>
+        <legend>Other Details / Information Needed</legend>
 
         <label>
             Mobile Phone:
@@ -82,31 +111,31 @@
             Grade Level:
             <select name="grade_level" required>
                 <option value="">-- Select Grade Level --</option>
-                <option value="g7">Grade 7</option>
-                <option value="g8">Grade 8</option>
-                <option value="g9">Grade 9</option>
-                <option value="g10">Grade 10</option>
-                <option value="g11">Grade 11</option>
-                <option value="g12">Grade 12</option>
+                <option>Grade 7</option>
+                <option>Grade 8</option>
+                <option>Grade 9</option>
+                <option>Grade 10</option>
+                <option>Grade 11</option>
+                <option>Grade 12</option>
             </select>
         </label>
 
         <label>
             Intern / Extern:
-            <input type="radio" name="status" value="internal" required> Intern
-            <input type="radio" name="status" value="external" required> Extern
+            <input type="radio" name="status" value="Intern" required> Intern
+            <input type="radio" name="status" value="Extern" required> Extern
         </label>
 
         <label>
             Preferred Organization / Club:
             <select name="club" required>
                 <option value="">-- Select Club --</option>
-                <option value="Volleyball Club">Volleyball Club</option>
-                <option value="Math Club">Math Club</option>
-                <option value="Arts">Arts and Literature</option>
-                <option value="Science Club">Science Club</option>
-                <option value="Music Club">Music Club</option>
-                <option value="Media">Media and Publications</option>
+                <option>Volleyball Club</option>
+                <option>Math Club</option>
+                <option>Arts and Literature</option>
+                <option>Science Club</option>
+                <option>Music Club</option>
+                <option>Media and Publications</option>
             </select>
         </label>
 
@@ -118,8 +147,10 @@
 
     <input type="submit" value="Submit Application">
     <input type="reset" value="Reset Form">
+    <input type="button" value="View Signups" onclick="viewSignups()">
 
 </form>
 
 </body>
 </html>
+
