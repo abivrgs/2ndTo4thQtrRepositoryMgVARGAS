@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Club Application Form</title>
+
+    <style>
+        .error {
+            border: 2px solid red;
+            background-color: #fcc3c3;
+        }
+
+        fieldset {
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-right: 10px;
+        }
+    </style>
+
+    <script>
+        // Confirms form submission
+        function confirmSubmit() {
+            return confirm("Are you sure you want to submit this application?");
+        }
+
+        // Confirms form reset
+        function confirmReset() {
+            return confirm("Are you sure you want to reset the form?");
+        }
+
+        // Highlights empty required fields
+        function checkEmpty(field) {
+            if (field.value.trim() === "") {
+                field.classList.add("error");
+            } else {
+                field.classList.remove("error");
+            }
+        }
+
+        // Save signup data to localStorage
+        function saveSignup(event) {
+            event.preventDefault(); // prevent page reload
+
+            if (!confirmSubmit()) return;
+
+            // Create signup object from form inputs
+            const signupData = {
+                student_id: document.querySelector("[name='student_id']").value,
+                full_name: document.querySelector("[name='full_name']").value,
+                birthday: document.querySelector("[name='birthday']").value,
+                email: document.querySelector("[name='email']").value,
+                mobile: document.querySelector("[name='mobile']").value,
+                grade_level: document.querySelector("[name='grade_level']").value,
+                status: document.querySelector("[name='status']:checked").value,
+                club: document.querySelector("[name='club']").value,
+                reason: document.querySelector("[name='reason']").value
+            };
+
+            // Retrieve existing signups from localStorage
+            let signups = localStorage.getItem("clubSignups");
+
+            // If no data exists yet, initialize an empty array
+            if (signups === null) {
+                signups = [];
+            } else {
+                signups = JSON.parse(signups);
+            }
+
+            // Add new signup to array
+            signups.push(signupData);
+
+            // Save updated array back to localStorage
+            localStorage.setItem("clubSignups", JSON.stringify(signups));
+
+            alert("Application submitted successfully!");
+            document.getElementById("signupForm").reset();
+        }
+
+        // Redirect to viewSignUps page
+        function viewSignups() {
+            window.location.href = "viewSignUps.html";
+        }
+    </script>
+</head>
+
+<body>
+
+<form id="signupForm" method="post"
+      onsubmit="saveSignup(event);"
+      onreset="return confirmReset();">
+
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label>
+            Student ID:
+            <input type="number" name="student_id" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Full Name:
+            <input type="text" name="full_name" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Birthday:
+            <input type="date" name="birthday" required>
+        </label>
+
+        <label>
+            Email Address:
+            <input type="email" name="email" required>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <legend>Other Details</legend>
+
+        <label>
+            Mobile Phone:
+            <input type="text" name="mobile" required onblur="checkEmpty(this)">
+        </label>
+
+        <label>
+            Grade Level:
+            <select name="grade_level" required>
+                <option value="">-- Select Grade Level --</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+                <option value="Grade 10">Grade 10</option>
+                <option value="Grade 11">Grade 11</option>
+                <option value="Grade 12">Grade 12</option>
+            </select>
+        </label>
+
+        <label>
+            Intern / Extern:
+            <input type="radio" name="status" value="Intern" required> Intern
+            <input type="radio" name="status" value="Extern" required> Extern
+        </label>
+
+        <label>
+            Preferred Organization / Club:
+            <select name="club" required>
+                <option value="">-- Select Club --</option>
+                <option value="Volleyball Club">Volleyball Club</option>
+                <option value="Math Club">Math Club</option>
+                <option value="Arts and Literature">Arts and Literature</option>
+                <option value="Science Club">Science Club</option>
+                <option value="Music Club">Music Club</option>
+                <option value="Media and Publications">Media and Publications</option>
+            </select>
+        </label>
+
+        <label>
+            Why do you want to join?
+            <textarea name="reason" rows="4" required onblur="checkEmpty(this)"></textarea>
+        </label>
+    </fieldset>
+
+    <input type="submit" value="Submit Application">
+    <input type="reset" value="Reset Form">
+    <button type="button" onclick="viewSignups()">View Sign-Ups</button>
+
+</form>
+
+</body>
+</html>
