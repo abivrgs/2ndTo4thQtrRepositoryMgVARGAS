@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Movie Ratings</title>
+
+<style>
+
+.container{
+    width:400px;
+    margin:auto;
+    margin-top:40px;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+}
+
+label{
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#1976d2;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1259a3;
+}
+
+.stars span{
+    font-size:22px;
+    cursor:pointer;
+    color:lightgray;
+}
+
+.movie-item{
+    background:#eee;
+    padding:10px;
+    margin-top:10px;
+    border-radius:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Add a Movie</h2>
+
+<form id="movieForm">
+
+<label>Title:</label>
+<input type="text" id="title" required>
+
+<label>Year:</label>
+<input type="number" id="year" required>
+
+<label>Genre:</label>
+<select id="genre">
+<option>Action</option>
+<option>Comedy</option>
+<option>Drama</option>
+<option>Horror</option>
+<option>Sci-Fi</option>
+<option>Romance</option>
+<option>Fiction</option>
+</select>
+
+<label>Rating:</label>
+<div class="stars" id="starContainer">
+<span data-value="1">★</span>
+<span data-value="2">★</span>
+<span data-value="3">★</span>
+<span data-value="4">★</span>
+<span data-value="5">★</span>
+</div>
+
+<br><br>
+
+<button type="submit">Add Movie</button>
+
+</form>
+
+<h2>Movie List</h2>
+
+<div id="movieList"></div>
+
+</div>
+
+<script>
+
+let selectedRating = 0;
+
+const stars = document.querySelectorAll("#starContainer span");
+
+stars.forEach(star => {
+    star.addEventListener("click", function(){
+
+        selectedRating = this.dataset.value;
+
+        stars.forEach(s => {
+            if(s.dataset.value <= selectedRating){
+                s.style.color = "gold";
+            }else{
+                s.style.color = "lightgray";
+            }
+        });
+
+    });
+});
+
+document.getElementById("movieForm").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const year = document.getElementById("year").value;
+    const genre = document.getElementById("genre").value;
+
+    const movie = {
+        title: title,
+        year: year,
+        genre: genre,
+        rating: selectedRating
+    };
+
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+    movies.push(movie);
+
+    localStorage.setItem("movies", JSON.stringify(movies));
+
+    displayMovies();
+
+    this.reset();
+    selectedRating = 0;
+
+    stars.forEach(s => s.style.color="lightgray");
+
+});
+
+function displayMovies(){
+
+    const movieList = document.getElementById("movieList");
+    movieList.innerHTML = "";
+
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+    movies.forEach(movie => {
+
+        const div = document.createElement("div");
+        div.className = "movie-item";
+
+       let starDisplay = "";
+
+    for(let i = 1; i <= 5; i++){
+        if(i <= movie.rating){
+            starDisplay += "<span style='color:gold;'>★</span>";
+        } else {
+            starDisplay += "<span style='color:lightgray;'>★</span>";
+        }
+    }
+
+            div.innerHTML = `
+            ${movie.title} (${movie.year}) - ${movie.genre}, Rating: ${starDisplay}
+             `;
+
+            movieList.appendChild(div);
+
+        });
+
+}
+
+displayMovies();
+
+</script>
+
+</body>
+</html>
