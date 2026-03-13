@@ -59,6 +59,16 @@ button:hover{
     margin-top:10px;
     border-radius:5px;
 }
+
+.delete-btn{
+    margin-left:5px;
+    padding:5px 5px;
+    color:white;
+    border:none;
+    border-radius:2px;
+    cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -147,7 +157,23 @@ document.getElementById("movieForm").addEventListener("submit", function(e){
 
     let movies = JSON.parse(localStorage.getItem("movies")) || [];
 
-    movies.push(movie);
+    // UPDATE LOGIC
+    let existingMovie = movies.find(m => m.title.toLowerCase() === title.toLowerCase());
+
+    if(existingMovie){
+
+        existingMovie.year = year;
+        existingMovie.genre = genre;
+
+        existingMovie.rating = Math.round(
+            (Number(existingMovie.rating) + Number(selectedRating)) / 2
+        );
+
+    }else{
+
+        movies.push(movie);
+
+    }
 
     localStorage.setItem("movies", JSON.stringify(movies));
 
@@ -172,23 +198,40 @@ function displayMovies(){
         const div = document.createElement("div");
         div.className = "movie-item";
 
-       let starDisplay = "";
+        let starDisplay = "";
 
-    for(let i = 1; i <= 5; i++){
-        if(i <= movie.rating){
-            starDisplay += "<span style='color:gold;'>★</span>";
-        } else {
-            starDisplay += "<span style='color:lightgray;'>★</span>";
+        for(let i = 1; i <= 5; i++){
+            if(i <= movie.rating){
+                starDisplay += "<span style='color:gold;'>★</span>";
+            } else {
+                starDisplay += "<span style='color:lightgray;'>★</span>";
+            }
         }
+
+        div.innerHTML = `
+        ${movie.title} (${movie.year}) - ${movie.genre}, Rating: ${starDisplay}
+        <button class="delete-btn" onclick="deleteMovie('${movie.title}')">Delete</button>
+        `;
+
+        movieList.appendChild(div);
+
+    });
+
+}
+
+function deleteMovie(title){
+
+    if(confirm("Are you sure you want to delete?")){
+
+        let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+        movies = movies.filter(movie => movie.title !== title);
+
+        localStorage.setItem("movies", JSON.stringify(movies));
+
+        displayMovies();
+
     }
-
-            div.innerHTML = `
-            ${movie.title} (${movie.year}) - ${movie.genre}, Rating: ${starDisplay}
-             `;
-
-            movieList.appendChild(div);
-
-        });
 
 }
 
