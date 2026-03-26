@@ -4,18 +4,25 @@
 
 ### Step 1 (Static vs Relative):
 - Add in css ```position: relative; top: 20px; left: 20px;``` to .sidebar.
-- Guided Question: What changed compared to the default static positioning? Try to give different values to top and left or you can change it to bottom, right.#### It adjusted its position relative to its normal position depending on how large the value is for top/left. The greater the number, the greater the distance it is to the respective side
+- Guided Question: What changed compared to the default static positioning? Try to give different values to top and left or you can change it to bottom, right.
+#### It adjusted its position relative to its normal position depending on how large the value is for top/left. The greater the number, the greater the distance it is to the respective side
+
 ### Step 2 (Fixed):
 - Add in css ```position: fixed; bottom: 0; width: 100%;``` to .footer.
-- Guided Question: What happens when you scroll the page? Why does the footer behave differently from position relative?#### When i scroll, the footer stays in place. The footer behaves differently from relative position because as the name said, its fixed, while relative isnt fixed and allows an element to be moved from its normal position
+- Guided Question: What happens when you scroll the page? Why does the footer behave differently from position relative?
+#### When i scroll, the footer stays in place. The footer behaves differently from relative position because as the name said, its fixed, while relative isnt fixed and allows an element to be moved from its normal position
+
 ### Step 3 (Absolute):
 - Add in css ```position: absolute; top: 66px; left: 200px;``` to .content.
-- Guided Question: What is the effect of position: absolute on an element? How is it different from fixed?#### It affects the element's normal position relative to its nearest positioned ancestor. The position of the element affected will not affect the position of other elements
+- Guided Question: What is the effect of position: absolute on an element? How is it different from fixed?
+#### It affects the element's normal position relative to its nearest positioned ancestor. The position of the element affected will not affect the position of other elements
+
 ### Step 4 : (Absolute)
 - Add in html ```<div class="notice">Notice!</div>``` and include the css below:
 ```css.notice {    position: absolute;    top: 60px;    left: 400px;    background: orange;    padding: 10px;    z-index: 2;}```
 - Give .content a z-index: 1.
-- Guided Question: Why does the notice appear on top of the content? What happens if you swap the z‑index values?#### Notice appears on top of the content because 
+- Guided Question: Why does the notice appear on top of the content? What happens if you swap the z‑index values?
+#### Notice appears on top of the content because 
 - Challenge:     * What changes that you have to do on the code that will position .notice box on the top right corner of the .content box? Please write the code on paper as well (both html and css on the part of .notice and .content).    * Try to change the position of .content to relative then to fixed. What do you observed each time?    * What do you observe on about the effect of z-index on .notice and .content boxes?
 3. Please answer the following reflection questions (15 minutes)
     a. Could you summarize the differences between the CSS position values (static, relative, absolute, fixed)? 
